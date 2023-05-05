@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/05/05 20:49:34 by lpeeters          #+#    #+#              #
-#    Updated: 2023/05/05 20:49:37 by lpeeters         ###   ########.fr        #
+#    Created: 2023/05/05 12:49:06 by lpeeters          #+#    #+#              #
+#    Updated: 2023/05/05 20:39:47 by lpeeters         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,16 +63,10 @@ LIB_ALL = ${foreach libdir,${LIB_DIRS},-L ${libdir}} \
 MKFL_ALL = ${foreach mkfldir,${MKFL_DIRS},${MAKE} -C ${mkfldir}}
 
 #make project into program
-${NAME}: ${OBJS} libft/libft.a
+${NAME}: ${OBJS}
 	${MK_DIR}
-	${CC} -o ${NAME} ${OBJS} ${LIB_ALL} -Llibft -lft
+	${CC} -o ${NAME} ${OBJS} ${LIB_ALL}
 	chmod +x ${NAME}
-
-#make library
-libft/libft.a:
-	${MKFL_ALL}
-	make -C libft
-	mv libft/libft.a .
 
 #make
 all: ${MKFL_ALL} ${NAME}
@@ -84,8 +78,6 @@ clean:
 #clean everything that was made
 fclean: clean
 	${RM} ${NAME}
-	${MAKE} -C libft fclean
-	${RM} libft.a
 
 #remake
 re: fclean all
