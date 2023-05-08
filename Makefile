@@ -6,7 +6,7 @@
 #    By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 20:49:34 by lpeeters          #+#    #+#              #
-#    Updated: 2023/05/05 20:49:37 by lpeeters         ###   ########.fr        #
+#    Updated: 2023/05/08 19:31:41 by lpeeters         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,13 @@ LIB_PNAMES = ${notdir ${LIBS}} #cut off the path
 LIB_LNAMES = ${LIB_PNAMES:lib%.a=%} #cut off the library files' "lib" prefix
 LIB_NAMES = ${LIB_LNAMES:.a=} #cut off the library files' ".a" suffix
 
+#compilation flags, their directories and names for any library
+#LIB_ALL = -L ${foreach libdir,${LIB_DIRS},${libdir}} \
+#	  -l ${foreach libname,${LIB_NAMES},${libname}}
+
+#test
+#LIB_FLAGS = ${CC} -o ${NAME} ${OBJS} ${LIB_ALL}
+
 #object directory
 OBJ_DIR = OBJS/
 
@@ -56,36 +63,30 @@ ${OBJ_DIR}%.o: %.c
 	${MK_DIR}
 	${CC} ${CFLAGS} -c $< -o $@
 
-#compilation flags, their directories and names for any library
-LIB_ALL = ${foreach libdir,${LIB_DIRS},-L ${libdir}} \
-	  ${foreach libname,${LIB_NAMES},-l ${libname}}
-
-MKFL_ALL = ${foreach mkfldir,${MKFL_DIRS},${MAKE} -C ${mkfldir}}
+#make other projects that were found
+MKFL_ALL = ${foreach mkfldir,${MKFL_DIRS}, make -C ${mkfldir}}
 
 #make project into program
-${NAME}: ${OBJS} libft/libft.a
-	${MK_DIR}
-	${CC} -o ${NAME} ${OBJS} ${LIB_ALL} -Llibft -lft
+${NAME}: MK ${OBJS}
+	${CC} -o ${NAME} ${OBJS} -L ${LIB_DIRS} -l ${LIB_NAMES}
 	chmod +x ${NAME}
 
 #make library
-libft/libft.a:
+MK:
 	${MKFL_ALL}
-	make -C libft
-	mv libft/libft.a .
 
 #make
-all: ${MKFL_ALL} ${NAME}
+all: ${NAME}
 
 #clean object files and directories
 clean:
 	${RM} ${OBJ_DIR}
+	${foreach mkfldir,${MKFL_DIRS}, make -C ${mkfldir} clean}
 
 #clean everything that was made
 fclean: clean
 	${RM} ${NAME}
-	${MAKE} -C libft fclean
-	${RM} libft.a
+	${foreach mkfldir,${MKFL_DIRS}, make -C ${mkfldir} fclean}
 
 #remake
 re: fclean all
