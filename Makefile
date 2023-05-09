@@ -6,7 +6,7 @@
 #    By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 20:49:34 by lpeeters          #+#    #+#              #
-#    Updated: 2023/05/08 19:31:41 by lpeeters         ###   ########.fr        #
+#    Updated: 2023/05/09 15:31:13 by lpeeters         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,8 +46,8 @@ LIB_LNAMES = ${LIB_PNAMES:lib%.a=%} #cut off the library files' "lib" prefix
 LIB_NAMES = ${LIB_LNAMES:.a=} #cut off the library files' ".a" suffix
 
 #compilation flags, their directories and names for any library
-#LIB_ALL = -L ${foreach libdir,${LIB_DIRS},${libdir}} \
-#	  -l ${foreach libname,${LIB_NAMES},${libname}}
+LIB_ALL = ${foreach libdir,${LIB_DIRS},-L ${libdir}} \
+	  ${foreach libname,${LIB_NAMES},-l ${libname}}
 
 #test
 #LIB_FLAGS = ${CC} -o ${NAME} ${OBJS} ${LIB_ALL}
@@ -58,25 +58,25 @@ OBJ_DIR = OBJS/
 #make directories for object files
 MK_DIR = mkdir -p ${@D}
 
+#make other projects that were found
+MKFL_ALL = ${foreach mkfldir,${MKFL_DIRS}, make -C ${mkfldir}}
+
+#make
+all: MK ${NAME}
+
 #make object files
 ${OBJ_DIR}%.o: %.c
 	${MK_DIR}
 	${CC} ${CFLAGS} -c $< -o $@
 
-#make other projects that were found
-MKFL_ALL = ${foreach mkfldir,${MKFL_DIRS}, make -C ${mkfldir}}
-
 #make project into program
-${NAME}: MK ${OBJS}
-	${CC} -o ${NAME} ${OBJS} -L ${LIB_DIRS} -l ${LIB_NAMES}
+${NAME}: ${OBJS} pipex.h
+	${CC} ${OBJS} ${LIB_ALL} -o ${NAME}
 	chmod +x ${NAME}
 
 #make library
 MK:
 	${MKFL_ALL}
-
-#make
-all: ${NAME}
 
 #clean object files and directories
 clean:
@@ -92,4 +92,4 @@ fclean: clean
 re: fclean all
 
 #targets
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re MK
