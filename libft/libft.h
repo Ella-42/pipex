@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:47:49 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/02 19:07:41 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:48:09 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
+void	free_arr(char **array);
+
+/*ft_printf*/
 
 void	ft_put_ptr(uintptr_t nb);
 void	ft_put_hex(unsigned int num, const char format);

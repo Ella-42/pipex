@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   handling.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:16:40 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/12 15:09:51 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/12 20:16:06 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
 /*error handling*/
+
 void	err(int type)
 {
 	if (type == INPUT_ERR)
@@ -29,5 +30,14 @@ void	err(int type)
 		ft_printf("command: Command not found\n");
 	if (type == EXECVE_ERR)
 		perror("execve");
+	exit(EXIT_FAILURE);
+}
+
+/*memory handling*/
+
+void	mem(char *array[], int type)
+{
+	if (type == DIRS_MEM)
+		free_arr(array);
 	exit(EXIT_FAILURE);
 }

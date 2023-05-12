@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 16:05:48 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/11 21:04:07 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:25:23 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # include <stdlib.h>
 
 /**************************************/
-/*           error defining           */
+/*           error handling           */
 /**************************************/
 
 /*file descriptor assigning error*/
@@ -64,11 +64,21 @@
 # define EXECVE_ERR 7
 
 /**************************************/
-/*           error/error.c            */
+/*          memory handling           */
+/**************************************/
+
+/*path directories' memory*/
+# define DIRS_MEM 1
+
+/**************************************/
+/*          error/handling.c          */
 /**************************************/
 
 /*error handling*/
 void	err(int type);
+
+/*memory handling*/
+void	mem(char *array[], int type);
 
 /*end if statement*/
 #endif
