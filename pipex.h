@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 16:05:48 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/12 17:25:23 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:11:02 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 /*     libraries and header files     */
 /**************************************/
 
-/*pid_t*/
+/*pid_t, waitpid*/
 # include <sys/types.h>
 
 /*libft library, ft_printf, ft_strtrim, ft_split, ft_strjoin, ft_strncmp*/
@@ -34,6 +34,9 @@
 
 /*pipe, fork, dup2, close, access*/
 # include <unistd.h>
+
+/*waitpid*/
+# include <sys/wait.h>
 
 /*exit*/
 # include <stdlib.h>

@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 17:51:03 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/12 15:43:16 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:07:23 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,48 +18,63 @@ char	*fetch_paths(char *envp[])
 		if (ft_strncmp(*envp, "PATH=", 5) == 0)
 			return (*envp + 5);
 	err(PATH_ENV_ERR);
-	return (NULL);
+	return ("Error");
 }
 
 char	*arg_path(char *paths, char cmd[])
 {
 	char	**dirs;
 	char	*apath;
+	char	*bpath;
 	int		i;
 
 	dirs = ft_split(paths, ':');
-	i = -1;
-	while (dirs[i++])
+	i = 0;
+	while (dirs[i])
 	{
-		apath = ft_strjoin(ft_strjoin(dirs[i], "/"), cmd);
-		if (access(apath, F_OK | X_OK) == 0)
-			return (apath);
+		bpath = ft_strjoin(dirs[i], "/");
+		apath = ft_strjoin(bpath, cmd);
+		free(bpath);
+		if (access(apath, F_OK | X_OK) == 0 || !apath)
+			break ;
+		free(apath);
+		i++;
 	}
-	err(CMD_ERR);
-	return (NULL);
+	free_arr(dirs);
+	if (!apath)
+		err(CMD_ERR);
+	return (apath);
 }
 
 void	child(int p_fd[], int fd[], char *av[], char *envp[])
 {
 	char	**acmd;
+	char	*bcmd;
+	char	*ccmd;
 
 	dup2(fd[0], 0);
 	dup2(p_fd[1], 1);
 	close(p_fd[1]);
 	acmd = ft_split(av[2], ' ');
-	if (execve(arg_path(fetch_paths(envp), acmd[0]), acmd, envp) < 0)
+	bcmd = fetch_paths(envp);
+	ccmd = arg_path(bcmd, acmd[0]);
+	if (execve(ccmd, acmd, envp) < 0)
 		err(EXECVE_ERR);
 }
 
 void	parent(int p_fd[], int fd[], char *av[], char *envp[])
 {
 	char	**acmd;
+	char	*bcmd;
+	char	*ccmd;
 
 	dup2(fd[1], 1);
 	dup2(p_fd[0], 0);
 	close(p_fd[1]);
 	acmd = ft_split(av[3], ' ');
-	if (execve(arg_path(fetch_paths(envp), acmd[0]), acmd, envp) < 0)
+	bcmd = fetch_paths(envp);
+	ccmd = arg_path(bcmd, acmd[0]);
+	if (execve(ccmd, acmd, envp) < 0)
 		err(EXECVE_ERR);
 }
 

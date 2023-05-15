@@ -6,7 +6,7 @@
 #    By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 20:49:34 by lpeeters          #+#    #+#              #
-#    Updated: 2023/05/09 15:31:13 by lpeeters         ###   ########.fr        #
+#    Updated: 2023/05/15 14:08:14 by lpeeters         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,6 @@ RM = rm -rf
 
 #flags
 CFLAGS = -Wall -Wextra -Werror
-
 #find sources
 SRCS = ${shell find . -name "*.c" -not -path "*lib*"}
 

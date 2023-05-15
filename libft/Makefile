@@ -6,7 +6,7 @@
 #    By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/17 13:58:55 by lpeeters          #+#    #+#              #
-#    Updated: 2023/05/08 19:31:42 by lpeeters         ###   ########.fr        #
+#    Updated: 2023/05/15 14:01:45 by lpeeters         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,6 @@ RM = rm -rf
 
 #flags
 CFLAGS = -Wall -Wextra -Werror
-
 #make directories for object files
 MK_DIR = mkdir -p ${@D}
 

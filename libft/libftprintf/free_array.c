@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 17:06:17 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/12 17:48:24 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/15 14:20:17 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	free_arr(char **array)
 {
 	int	i;
 
-	i = -1;
-	while (array[i++])
-		free(array[i]);
+	i = 0;
+	while (array[i])
+		free(array[i++]);
 	free(array);
 }

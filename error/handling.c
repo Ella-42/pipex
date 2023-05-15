@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:16:40 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/12 20:16:06 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:58:21 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	err(int type)
 	if (type == PATH_ENV_ERR)
 		ft_printf("environment: Missing path\n");
 	if (type == CMD_ERR)
-		ft_printf("command: Command not found\n");
+		perror("command");
 	if (type == EXECVE_ERR)
 		perror("execve");
 	exit(EXIT_FAILURE);
