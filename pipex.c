@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 17:51:03 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/15 17:07:23 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:13:47 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,18 @@ void	child(int p_fd[], int fd[], char *av[], char *envp[])
 	char	*ccmd;
 
 	dup2(fd[0], 0);
+	close(fd[0]);
 	dup2(p_fd[1], 1);
-	close(p_fd[1]);
+	close(p_fd[0]);
 	acmd = ft_split(av[2], ' ');
 	bcmd = fetch_paths(envp);
 	ccmd = arg_path(bcmd, acmd[0]);
 	if (execve(ccmd, acmd, envp) < 0)
 		err(EXECVE_ERR);
+	free(acmd);
+	free(bcmd);
+	free(ccmd);
+	exit(EXIT_FAILURE);
 }
 
 void	parent(int p_fd[], int fd[], char *av[], char *envp[])
@@ -69,6 +74,7 @@ void	parent(int p_fd[], int fd[], char *av[], char *envp[])
 	char	*ccmd;
 
 	dup2(fd[1], 1);
+	close(fd[1]);
 	dup2(p_fd[0], 0);
 	close(p_fd[1]);
 	acmd = ft_split(av[3], ' ');
@@ -76,6 +82,10 @@ void	parent(int p_fd[], int fd[], char *av[], char *envp[])
 	ccmd = arg_path(bcmd, acmd[0]);
 	if (execve(ccmd, acmd, envp) < 0)
 		err(EXECVE_ERR);
+	free(acmd);
+	free(bcmd);
+	free(ccmd);
+	exit(EXIT_FAILURE);
 }
 
 int	main(int ac, char *av[], char *envp[])
@@ -97,6 +107,7 @@ int	main(int ac, char *av[], char *envp[])
 		err(FORK_ERR);
 	if (!pid)
 		child(p_fd, fd, av, envp);
+	waitpid(pid, NULL, 0);
 	parent(p_fd, fd, av, envp);
 	return (0);
 }
