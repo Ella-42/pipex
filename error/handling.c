@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:16:40 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/15 16:58:21 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/16 21:01:26 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,26 @@ void	err(int type)
 {
 	if (type == INPUT_ERR)
 		ft_printf("input: Incorrect number of arguments\n");
-	if (type == OPEN_ERR)
+	else if (type == OPEN_ERR)
 		perror("open");
-	if (type == PIPE_ERR)
+	else if (type == PIPE_ERR)
 		perror("pipe");
-	if (type == FORK_ERR)
+	else if (type == FORK_ERR)
 		perror("fork");
-	if (type == PATH_ENV_ERR)
+	else if (type == PATH_ENV_ERR)
 		ft_printf("environment: Missing path\n");
-	if (type == CMD_ERR)
+	else if (type == CMD_ERR)
 		perror("command");
-	if (type == EXECVE_ERR)
+	else if (type == EXECVE_ERR)
 		perror("execve");
+	else
+		ft_printf("unkown error type\n");
 	exit(EXIT_FAILURE);
 }
 
 /*memory handling*/
 
-void	mem(char *array[], int type)
+void	mem(char **array, int type)
 {
 	if (type == DIRS_MEM)
 		free_arr(array);

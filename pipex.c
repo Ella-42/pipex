@@ -6,13 +6,13 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 17:51:03 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/15 19:13:47 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/16 21:56:47 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*fetch_paths(char *envp[])
+char	*fetch_paths(char **envp)
 {
 	while (*envp && *envp++)
 		if (ft_strncmp(*envp, "PATH=", 5) == 0)
@@ -21,7 +21,7 @@ char	*fetch_paths(char *envp[])
 	return ("Error");
 }
 
-char	*arg_path(char *paths, char cmd[])
+char	*arg_path(char *paths, char *cmd)
 {
 	char	**dirs;
 	char	*apath;
@@ -46,14 +46,13 @@ char	*arg_path(char *paths, char cmd[])
 	return (apath);
 }
 
-void	child(int p_fd[], int fd[], char *av[], char *envp[])
+void	child(int *p_fd, int *fd, char **av, char **envp)
 {
 	char	**acmd;
 	char	*bcmd;
 	char	*ccmd;
 
 	dup2(fd[0], 0);
-	close(fd[0]);
 	dup2(p_fd[1], 1);
 	close(p_fd[0]);
 	acmd = ft_split(av[2], ' ');
@@ -64,17 +63,15 @@ void	child(int p_fd[], int fd[], char *av[], char *envp[])
 	free(acmd);
 	free(bcmd);
 	free(ccmd);
-	exit(EXIT_FAILURE);
 }
 
-void	parent(int p_fd[], int fd[], char *av[], char *envp[])
+void	parent(int *p_fd, int *fd, char **av, char **envp)
 {
 	char	**acmd;
 	char	*bcmd;
 	char	*ccmd;
 
 	dup2(fd[1], 1);
-	close(fd[1]);
 	dup2(p_fd[0], 0);
 	close(p_fd[1]);
 	acmd = ft_split(av[3], ' ');
@@ -85,10 +82,12 @@ void	parent(int p_fd[], int fd[], char *av[], char *envp[])
 	free(acmd);
 	free(bcmd);
 	free(ccmd);
-	exit(EXIT_FAILURE);
+	close(fd[1]);
+	close(p_fd[0]);
+	exit(EXIT_SUCCESS);
 }
 
-int	main(int ac, char *av[], char *envp[])
+int	main(int ac, char **av, char **envp)
 {
 	int		p_fd[2];
 	int		fd[2];
@@ -109,5 +108,4 @@ int	main(int ac, char *av[], char *envp[])
 		child(p_fd, fd, av, envp);
 	waitpid(pid, NULL, 0);
 	parent(p_fd, fd, av, envp);
-	return (0);
 }
