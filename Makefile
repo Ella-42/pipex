@@ -6,7 +6,7 @@
 #    By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 20:49:34 by lpeeters          #+#    #+#              #
-#    Updated: 2023/05/15 17:11:39 by lpeeters         ###   ########.fr        #
+#    Updated: 2023/05/17 18:31:58 by lpeeters         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ RM = rm -rf
 
 #flags
 CFLAGS = -Wall -Wextra -Werror
+
 #find sources
 SRCS = ${shell find . -name "*.c" -not -path "*lib*"}
 
@@ -48,9 +49,6 @@ LIB_NAMES = ${LIB_LNAMES:.a=} #cut off the library files' ".a" suffix
 LIB_ALL = ${foreach libdir,${LIB_DIRS},-L ${libdir}} \
 	  ${foreach libname,${LIB_NAMES},-l ${libname}}
 
-#test
-#LIB_FLAGS = ${CC} -o ${NAME} ${OBJS} ${LIB_ALL}
-
 #object directory
 OBJ_DIR = OBJS/
 
@@ -70,7 +68,7 @@ ${OBJ_DIR}%.o: %.c
 
 #make project into program
 ${NAME}: ${OBJS} pipex.h
-	${CC} ${OBJS} ${LIB_ALL} -o ${NAME}
+	${CC} -g ${OBJS} ${LIB_ALL} -o ${NAME}
 	chmod +x ${NAME}
 
 #make library

@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 17:51:03 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/16 21:56:47 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/17 19:23:10 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,43 +48,26 @@ char	*arg_path(char *paths, char *cmd)
 
 void	child(int *p_fd, int *fd, char **av, char **envp)
 {
-	char	**acmd;
-	char	*bcmd;
-	char	*ccmd;
+	char	**cmd;
 
 	dup2(fd[0], 0);
 	dup2(p_fd[1], 1);
 	close(p_fd[0]);
-	acmd = ft_split(av[2], ' ');
-	bcmd = fetch_paths(envp);
-	ccmd = arg_path(bcmd, acmd[0]);
-	if (execve(ccmd, acmd, envp) < 0)
-		err(EXECVE_ERR);
-	free(acmd);
-	free(bcmd);
-	free(ccmd);
+	cmd = ft_split(av[2], ' ');
+	if (execve(arg_path(fetch_paths(envp), cmd[0]), cmd, envp) < 0)
+		memerr(cmd, EXECVE_MEM, EXECVE_ERR);
 }
 
 void	parent(int *p_fd, int *fd, char **av, char **envp)
 {
-	char	**acmd;
-	char	*bcmd;
-	char	*ccmd;
+	char	**cmd;
 
 	dup2(fd[1], 1);
 	dup2(p_fd[0], 0);
 	close(p_fd[1]);
-	acmd = ft_split(av[3], ' ');
-	bcmd = fetch_paths(envp);
-	ccmd = arg_path(bcmd, acmd[0]);
-	if (execve(ccmd, acmd, envp) < 0)
-		err(EXECVE_ERR);
-	free(acmd);
-	free(bcmd);
-	free(ccmd);
-	close(fd[1]);
-	close(p_fd[0]);
-	exit(EXIT_SUCCESS);
+	cmd = ft_split(av[3], ' ');
+	if (execve(arg_path(fetch_paths(envp), cmd[0]), cmd, envp) < 0)
+		memerr(cmd, EXECVE_MEM, EXECVE_ERR);
 }
 
 int	main(int ac, char **av, char **envp)

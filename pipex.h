@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 16:05:48 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/16 21:01:27 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/17 19:23:06 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,10 @@
 /**************************************/
 
 /*path directories' memory*/
-# define DIRS_MEM 1
+# define EXIT 0
+
+/*path directories' memory*/
+# define EXECVE_MEM 7
 
 /**************************************/
 /*          error/handling.c          */
@@ -81,7 +84,7 @@
 void	err(int type);
 
 /*memory handling*/
-void	mem(char *array[], int type);
+void	memerr(char **array, int type, int err);
 
 /*end if statement*/
 #endif
