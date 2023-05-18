@@ -6,7 +6,7 @@
 #    By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 20:49:34 by lpeeters          #+#    #+#              #
-#    Updated: 2023/05/17 18:31:58 by lpeeters         ###   ########.fr        #
+#    Updated: 2023/05/18 19:34:46 by lpeeters         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ ${OBJ_DIR}%.o: %.c
 
 #make project into program
 ${NAME}: ${OBJS} pipex.h
-	${CC} -g ${OBJS} ${LIB_ALL} -o ${NAME}
+	${CC} -g -fsanitize=address ${OBJS} ${LIB_ALL} -o ${NAME}
 	chmod +x ${NAME}
 
 #make library

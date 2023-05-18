@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:16:40 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/17 19:23:08 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/18 19:32:31 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	memerr(char **array, int type, int error)
 {
 	if (type == EXECVE_MEM)
 		free_arr(array);
-	if (err == EXIT)
+	if (error == EXIT)
 		exit(EXIT_FAILURE);
 	else if (error == EXECVE_ERR)
 		err(EXECVE_ERR);
