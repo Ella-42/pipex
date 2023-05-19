@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:16:40 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/18 19:32:31 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/18 23:26:52 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,14 @@ void	err(int type)
 		ft_printf("environment: Missing path\n");
 	else if (type == CMD_ERR)
 		perror("command");
+	else if (type == DUP2_ERR)
+		perror("dup2");
+	else if (type == CLOSE_ERR)
+		perror("close");
 	else if (type == EXECVE_ERR)
 		perror("execve");
 	else
-		ft_printf("unkown error type\n");
+		ft_printf("Unkown error type\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -41,8 +45,8 @@ void	memerr(char **array, int type, int error)
 {
 	if (type == EXECVE_MEM)
 		free_arr(array);
-	if (error == EXIT)
-		exit(EXIT_FAILURE);
-	else if (error == EXECVE_ERR)
+	if (error == EXECVE_ERR)
 		err(EXECVE_ERR);
+	else if (error == EXIT)
+		exit(EXIT_FAILURE);
 }

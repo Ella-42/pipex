@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 16:05:48 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/18 19:35:00 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/18 23:27:07 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,43 @@
 /*command not found error*/
 # define CMD_ERR 6
 
+/*dup2 error*/
+# define DUP2_ERR 7
+
+/*close error*/
+# define CLOSE_ERR 8
+
 /*execve error*/
-# define EXECVE_ERR 7
+# define EXECVE_ERR 9
 
 /**************************************/
 /*          memory handling           */
 /**************************************/
 
 /*path directories' memory*/
-# define EXIT 0
+# define EXIT -1
 
 /*path directories' memory*/
-# define EXECVE_MEM 7
+# define EXECVE_MEM 9
+
+/**************************************/
+/*              pipex.c               */
+/**************************************/
+
+/*fetch the path needed by arg_path*/
+char	*fetch_paths(char **envp);
+
+/*fetch the arguments needed by execve*/
+char	*arg_path(char *paths, char *cmd);
+
+/*redirect input and program to first command*/
+void	child(int *p_fd, int *fd, char **av, char **envp);
+
+/*redirect output and program to second command*/
+void	parent(int *p_fd, int *fd, char **av, char **envp);
+
+/*program that will mimic a pipe like in Shell*/
+int		main(int ac, char **av, char **envp);
 
 /**************************************/
 /*          error/handling.c          */

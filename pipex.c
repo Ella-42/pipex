@@ -6,11 +6,13 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 17:51:03 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/05/18 19:34:53 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/05/18 23:27:06 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+/*fetch the path needed by arg_path*/
 
 char	*fetch_paths(char **envp)
 {
@@ -20,6 +22,8 @@ char	*fetch_paths(char **envp)
 	err(PATH_ENV_ERR);
 	return ("Error");
 }
+
+/*fetch the arguments needed by execve*/
 
 char	*arg_path(char *paths, char *cmd)
 {
@@ -46,29 +50,41 @@ char	*arg_path(char *paths, char *cmd)
 	return (apath);
 }
 
+/*redirect input and program to first command*/
+
 void	child(int *p_fd, int *fd, char **av, char **envp)
 {
 	char	**cmd;
 
-	dup2(fd[0], 0);
-	dup2(p_fd[1], 1);
-	close(p_fd[0]);
+	if (dup2(fd[0], 0) < 0)
+		err(DUP2_ERR);
+	if (dup2(p_fd[1], 1) < 0)
+		err(DUP2_ERR);
+	if (close(p_fd[0]) < 0)
+		err(CLOSE_ERR);
 	cmd = ft_split(av[2], ' ');
 	if (execve(arg_path(fetch_paths(envp), cmd[0]), cmd, envp) < 0)
 		memerr(cmd, EXECVE_MEM, EXECVE_ERR);
 }
 
+/*redirect output and program to second command*/
+
 void	parent(int *p_fd, int *fd, char **av, char **envp)
 {
 	char	**cmd;
 
-	dup2(fd[1], 1);
-	dup2(p_fd[0], 0);
-	close(p_fd[1]);
+	if (dup2(fd[1], 1) < 0)
+		err(DUP2_ERR);
+	if (dup2(p_fd[0], 0) < 0)
+		err(DUP2_ERR);
+	if (close(p_fd[1]) < 0)
+		err(CLOSE_ERR);
 	cmd = ft_split(av[3], ' ');
 	if (execve(arg_path(fetch_paths(envp), cmd[0]), cmd, envp) < 0)
 		memerr(cmd, EXECVE_MEM, EXECVE_ERR);
 }
+
+/*program that will mimic a pipe like in Shell*/
 
 int	main(int ac, char **av, char **envp)
 {
