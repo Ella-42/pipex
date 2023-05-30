@@ -6,7 +6,7 @@
 #    By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/05 20:49:34 by lpeeters          #+#    #+#              #
-#    Updated: 2023/05/18 22:47:15 by lpeeters         ###   ########.fr        #
+#    Updated: 2023/05/30 16:56:07 by lpeeters         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,9 @@ CFLAGS = -Wall -Wextra -Werror
 
 #library file
 LIB = libft/libft.a
+
+#compiling with the library
+CLIB = -L libft/ -l ft
 
 #make in library directory
 MK_LIB = make -C libft/ > /dev/null 2>&1
@@ -44,7 +47,7 @@ ${NAME}: ${SRCS} ${HEADER}
 	@echo "${COLOR_INFO}Gathering ingredients...${COLOR_RESET}"
 	@${MK_LIB}
 	@echo "${COLOR_INFO}Mixing ingredients and brewing ${NAME}...${COLOR_RESET}"
-	@${CC} ${CFLAGS} ${SRCS} ${HEADER} ${LIB} -o ${NAME}
+	@${CC} ${CFLAGS} ${SRCS} ${HEADER} ${CLIB} -o ${NAME}
 	@chmod +x ${NAME}
 	@echo "${COLOR_SUCCESS}Voila! ${NAME} is ready to be served!${COLOR_RESET}"
 
